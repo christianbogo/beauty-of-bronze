@@ -159,9 +159,7 @@ export function AdminGalleryPage() {
     };
   }
 
-  function defaultPhotoCaption(groupTitle: string): string {
-    return `${groupTitle} — Student Work`;
-  }
+  
 
   async function addGroup() {
     const name = newGroupTitle.trim();
