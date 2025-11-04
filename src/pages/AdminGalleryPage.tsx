@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../providers/AuthProvider";
 import { Link } from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/app";
 import { storage } from "../firebase/app";
-import { ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { AdminTopBar } from "../components/AdminTopBar";
 import { AdminMenuOverlay } from "../components/AdminMenuOverlay";
 import { Pencil, Trash2 } from "lucide-react";
@@ -202,24 +202,7 @@ export function AdminGalleryPage() {
     }
   }
 
-  async function addPhoto() {
-    if (!selectedGroup) return;
-    const groupTitle =
-      groups.find((g) => g.id === selectedGroup)?.title ?? "Gallery";
-    const p: Photo = {
-      id: crypto.randomUUID(),
-      caption: defaultPhotoCaption(groupTitle),
-    };
-    setPhotos((prev) => [...prev, p]);
-    setSaving(true);
-    try {
-      await setDoc(doc(db, "galleryGroups", selectedGroup, "photos", p.id), {
-        caption: p.caption,
-      });
-    } finally {
-      setSaving(false);
-    }
-  }
+  
 
   async function uploadPhotos(files: FileList | null) {
     if (!files || !selectedGroup) return;
@@ -660,7 +643,7 @@ function PhotoManager({
   const [previewHeight, setPreviewHeight] = useState<number>(224);
   const dragRef = useRef<{ startY: number; startH: number } | null>(null);
   const [draft, setDraft] = useState<Photo | null>(null);
-  const [saveError, setSaveError] = useState<string>("");
+  const [, setSaveError] = useState<string>("");
   const [savingDraft, setSavingDraft] = useState(false);
 
   // Keep a local editable draft of the selected photo

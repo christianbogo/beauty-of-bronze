@@ -14,7 +14,6 @@ import {
   getDocs,
   orderBy,
   query,
-  setDoc,
   writeBatch,
   deleteDoc,
 } from "firebase/firestore";
@@ -729,9 +728,7 @@ export function AdminContentEditorPage() {
   const [banner, setBanner] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">(
-    "idle"
-  );
+  const [, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
 
   // Original snapshot for dirty checking and cancel
   const [orig, setOrig] = useState<{
@@ -946,145 +943,6 @@ export function AdminContentEditorPage() {
     } finally {
       setSaving(false);
     }
-  }
-  function FeaturedSlotsCommon({
-    title,
-    slots,
-    setSlots,
-    allPhotos,
-  }: {
-    title: string;
-    slots: string[];
-    setSlots: (s: string[]) => void;
-    allPhotos: {
-      url: string;
-      key: string;
-      name?: string;
-      date?: string;
-      caption?: string;
-    }[];
-  }) {
-    const [pickerIdx, setPickerIdx] = useState<number | null>(null);
-    return (
-      <section className="mt-6">
-        <div className="flex items-center justify-between">
-          <div className="text-sm font-medium">{title}</div>
-          <button
-            onClick={() => setSlots([...slots, ""])}
-            className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-200"
-          >
-            Add slot
-          </button>
-        </div>
-        <div className="mt-3 space-y-2">
-          {slots.map((url, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2"
-              draggable
-              onDragStart={(e) =>
-                e.dataTransfer.setData("text/plain", String(i))
-              }
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                const from = Number(e.dataTransfer.getData("text/plain"));
-                if (Number.isNaN(from)) return;
-                const to = i;
-                const next = [...slots];
-                const [it] = next.splice(from, 1);
-                next.splice(to, 0, it);
-                setSlots(next);
-              }}
-            >
-              <div className="select-none cursor-move px-2 py-2 text-neutral-500">
-                ≡
-              </div>
-              <button
-                type="button"
-                onClick={() => setPickerIdx((prev) => (prev === i ? null : i))}
-                className="h-20 w-20 overflow-hidden rounded border border-neutral-300 bg-white"
-                title="Select featured photo"
-              >
-                {url ? (
-                  <img
-                    src={url}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="flex h-full w-full items-center justify-center text-xs text-neutral-500">
-                    Choose
-                  </span>
-                )}
-              </button>
-              <div className="flex-1 text-xs text-neutral-700">
-                {(() => {
-                  const meta = allPhotos.find((p) => p.url === url);
-                  if (!meta) return null;
-                  return (
-                    <div className="truncate">
-                      <div className="font-medium truncate">
-                        {meta.name || "Untitled"}
-                      </div>
-                      {meta.date && (
-                        <div className="truncate text-neutral-500">
-                          {meta.date}
-                        </div>
-                      )}
-                      {meta.caption && (
-                        <div className="truncate text-neutral-600">
-                          {meta.caption}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-              </div>
-              <button
-                onClick={() => setSlots(slots.filter((_, idx) => idx !== i))}
-                className="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-200"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
-        {pickerIdx !== null && (
-          <div className="mt-3 rounded-md border border-neutral-300 p-2">
-            <div className="mb-1 text-xs text-neutral-600">Choose a photo</div>
-            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
-              {allPhotos.map((p) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  onClick={() => {
-                    const next = [...slots];
-                    next[pickerIdx] = p.url;
-                    setSlots(next);
-                    setPickerIdx(null);
-                  }}
-                  className="aspect-square overflow-hidden rounded border border-neutral-300"
-                >
-                  <img
-                    src={p.url}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-            <div className="mt-2 text-right">
-              <button
-                onClick={() => setPickerIdx(null)}
-                className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-200"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-      </section>
-    );
   }
 
   // Top-level shared component for use outside the main editor (e.g., EventsManager)
