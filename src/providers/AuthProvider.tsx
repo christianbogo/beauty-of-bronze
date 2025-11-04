@@ -3,7 +3,11 @@ import type { User } from "firebase/auth";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "../firebase/app";
 
-const ADMIN_EMAILS = new Set<string>(["christianbcutter@yahoo.com"]);
+const ADMIN_EMAILS = new Set<string>([
+  "christianbcutter@yahoo.com",
+  "beautyofbronzencw@gmail.com",
+  "cutter.christian@wenatcheeschools.org",
+]);
 
 type AuthContextValue = {
   user: User | null;

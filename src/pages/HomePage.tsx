@@ -139,7 +139,7 @@ export function HomePage() {
 
   const eventDisplay = useMemo(() => arrangeEvents(events), [events]);
   return (
-    <div className="mx-auto max-w-none px-0 pt-0 sm:pb-12 sm:pt-0">
+    <div className="mx-auto max-w-none px-0 pt-0 sm:pt-0">
       {/* Hero: centered full logo over the site background gradient */}
       <section className="relative isolate block w-full">
         {/* Inline top-of-hero nav, sits on page background */}
@@ -222,7 +222,7 @@ export function HomePage() {
         style={{ backgroundColor: "var(--color-brand-50)" }}
       >
         <div className="mx-6 py-8 sm:mx-10 lg:mx-16 xl:mx-24">
-          <div className="mx-auto max-w-3xl rounded-xl bg-brand-700/95 p-6 text-center text-white shadow-md">
+          <div className="mx-auto max-w-3xl rounded-xl bg-brand-600/95 p-6 text-center text-white shadow-md">
             <h2 className="text-2xl font-semibold">Support Beauty of Bronze</h2>
             <p className="mt-1 opacity-90">
               Your gift helps bring hands-on art experiences to more students.
@@ -357,17 +357,24 @@ function EventsSection({
               to={`/events?event=${encodeURIComponent(e.id)}`}
               className="block"
             >
-              <article className="rounded-lg border border-brand-300 bg-brand-50 p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900">
-                <div className="flex items-start gap-4">
+              <article
+                className={
+                  (e.isPast
+                    ? "border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 "
+                    : "border-brand-300 bg-brand-50 dark:border-neutral-700 dark:bg-neutral-900 ") +
+                  "rounded-lg p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                }
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
                   {e.featured && e.featured[0] && (
                     <img
                       src={e.featured[0]}
                       alt=""
-                      className="h-28 w-28 flex-none rounded-md object-cover"
+                      className="h-40 w-full rounded-md object-cover sm:h-28 sm:w-28 sm:flex-none"
                     />
                   )}
                   {!e.featured?.[0] && (
-                    <div className="h-28 w-28 flex-none rounded-md bg-brand-200/40" />
+                    <div className="h-40 w-full rounded-md bg-brand-200/40 sm:h-28 sm:w-28 sm:flex-none" />
                   )}
                   <div className="min-w-0 flex-1">
                     <div className="text-sm uppercase tracking-wide text-brand-700">
