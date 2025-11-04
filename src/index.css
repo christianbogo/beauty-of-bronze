@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --color-brand-50: #faf5ef;
+  --color-brand-100: #f3e6d3;
+  --color-brand-200: #e7c99f;
+  --color-brand-300: #dbac6b;
+  --color-brand-400: #cf9040;
+  --color-brand-500: #b77729; /* bronze */
+  --color-brand-600: #915f21;
+  --color-brand-700: #6c4719;
+  --color-brand-800: #473011;
+  --color-brand-900: #221809;
+}
+
+/* Custom font: Britannic */
+@font-face {
+  font-family: "Britannic";
+  src: url("./assets/Logo/Typefaces/BRITANIC.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-britannic {
+  font-family: "Britannic", var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+/* Section background helpers and patterned dividers for homepage */
+.section-light {
+  background-color: #ffffff;
+}
+
+.section-bronze {
+  background: linear-gradient(180deg, var(--color-brand-50), #ffffff 60%);
+}
+
+/* Reverse bronze gradient (for smoother transition into tinted section below) */
+.section-bronze-reverse {
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-brand-50) 100%);
+}
+.dark .section-bronze-reverse {
+  background: linear-gradient(180deg, #121212 0%, #0b0b0b 100%);
+}
+
+.dark .section-bronze {
+  background: radial-gradient(900px 500px at 50% -120px, #141414, #0b0b0b);
+}
+
+.dark .section-light {
+  background-color: #0b0b0b;
+}
+
+.divider-diagonal {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.08) 0,
+    rgba(0, 0, 0, 0.08) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+.divider-dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.09) 20%, transparent 21%);
+  background-size: 8px 8px;
+}
+
+.divider-bronze {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(183, 119, 41, 0.25) 0,
+    rgba(183, 119, 41, 0.25) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+.dark .divider-diagonal {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.08) 0,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+.dark .divider-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 22%, transparent 23%);
+  background-size: 8px 8px;
+}
+
+.dark .divider-bronze {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(183, 119, 41, 0.4) 0,
+    rgba(183, 119, 41, 0.4) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+/* Oval section styling for homepage feature sections */
+.oval-section {
+  position: relative;
+  overflow: hidden; /* ensure ellipse caps are clipped by page sides */
+  isolation: isolate;
+}
+.oval-section::before,
+.oval-section::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160vw; /* extend beyond page to create side cut-off */
+  height: clamp(80px, 20vw, 240px); /* responsive arc size */
+  border-radius: 0 0 9999px 9999px;
+  z-index: -1;
+  pointer-events: none;
+}
+.oval-section::before {
+  top: calc(-1 * clamp(80px, 20vw, 240px) / 2);
+}
+.oval-section::after {
+  bottom: calc(-1 * clamp(80px, 20vw, 240px) / 2);
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* Dark bronze background approximating logo bronze gradient */
+.oval-bronze-dark {
+  color: #fff;
+  background: var(--color-brand-600);
+}
+.dark .oval-bronze-dark {
+  background: #5a3d14; /* deeper bronze for dark mode */
+}
+.dark .oval-bronze-dark::before,
+.dark .oval-bronze-dark::after {
+  background: #5a3d14;
+}
+.oval-bronze-dark::before,
+.oval-bronze-dark::after {
+  background: var(--color-brand-600);
+}
+
+/* Complementary cool-teal hue for Who We Are */
+.oval-complement {
+  color: #fff;
+  background: #176c73;
+}
+.dark .oval-complement {
+  background: #0f4e54; /* deeper teal in dark mode */
+}
+.dark .oval-complement::before,
+.dark .oval-complement::after {
+  background: #0f4e54;
+}
+.oval-complement::before,
+.oval-complement::after {
+  background: #176c73;
+}
+
+/* Crossfade utility for gallery */
+.fade-cycle {
+  position: relative;
+}
+.fade-cycle > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
+}
+.fade-cycle > img.is-active {
+  opacity: 1;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply text-neutral-900 dark:text-neutral-50 antialiased;
+  /* Hero background should end in white at the bottom */
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%) no-repeat fixed;
+  background-size: 100% 100vh;
+}
+
+.dark body {
+  background: radial-gradient(1000px 600px at 50% -100px, #0f0f0f, #0b0b0b)
+    no-repeat fixed;
+  background-size: 100% 100vh;
+}
+
+html {
+  font-size: 17px;
+}
